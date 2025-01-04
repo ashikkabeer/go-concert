@@ -1,16 +1,10 @@
 const express = require('express');
-const pool = require('./database');
-
+const pool = require('../config/db');
 const router = express.Router();
 
+const userRoutes = require('./userRoutes')
 // Example route
-router.get('/', async (req, res) => {
-  try {
-    const [rows] = await pool.query('SELECT 1 + 1 AS result');
-    res.json({ result: rows[0].result });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.use('/auth',userRoutes);
+// 
 
 module.exports = router;
