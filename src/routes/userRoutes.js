@@ -1,43 +1,23 @@
-require('dotenv').config();
-var jwt = require('jsonwebtoken');
 const router = require('express').Router();
-const pool = require('../config/db')
-const bcrypt = require('bcrypt')
+const { registerUser, loginUser,logoutUser,forgotPassword,resetPassword } = require('../controllers/userController')
+const {getUserProfile,updateUserProfile} = require('../controllers/userController')
+//auth routes
 
-const JWT_SECRET = process.env.JWT_SECRET;
-router.post('/register', async (req, res) => {
-    try {
-        console.log(req.body)
-        const { name, email, password, role } = req.body;
-        const saltRounds = parseInt(process.env.SALT_ROUNDS) || 10;
+// const { protect, restrictTo } = require('../middlewares/authMiddleware');
+router.get('/profile',protect, getUserProfile);
+router.put('/profile',protect, updateUserProfile)
 
-        const hashPassword = await bcrypt.hash(password, saltRounds);
 
-        const userData = {
-            name,
-            email,
-            password: hashPassword,
-            role
-        };
-        const query = `INSERT INTO Users (name, email, password, role) VALUES (?, ?, ?, ?)`;
+router.post('/logout', logoutUser)
+router.post('/forgot-password', logoutUser)
+router.post('/reset-password', logoutUser)
 
-        console.log('Query about to execute');
+// 
 
-        const [results, fields] = await pool.execute(query, [userData.name, userData.email, userData.password, userData.role]);
-        const userId = results.insertId;
 
-        const token = jwt.sign(
-            { id: userId, email: userData.email, role: userData.role },
-            JWT_SECRET, 
-            { expiresIn: '1h' }
-        );
-        return res.status(200).json({ "token": token, "message": "Successfull" });
-
-    } catch (error) {
-        console.error('Error inserting user:', error);
-        return res.status(500).json('Error inserting user');
-
-    }
-})
-
+// [ ] Create an endpoint: PUT /api/users/profile
+// [ ] Validate input fields (name, email, password, etc.).
+// [ ] Allow updating specific fields (e.g., name, email, password).
+// [ ] Hash the new password if updated.
+// [ ] Update the user's details in the users table.
 module.exports = router;
