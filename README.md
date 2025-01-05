@@ -27,38 +27,43 @@ GoConcert is a modern, user-friendly online platform for discovering and booking
 ### Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/ashikkabeer/Go-Concert.git
-   cd GoConcert
-   ```
+
+    ```bash
+    git clone https://github.com/ashikkabeer/Go-Concert.git
+    cd GoConcert
+    ```
 
 2. Install dependencies:
-   ```bash
-   npm install
-   ```
+
+    ```bash
+    npm install
+    ```
 
 3. Create a `.env` file in the root directory and add your environment variables:
-   ```env
-   DB_HOST=localhost
-   DB_USER=root
-   DB_PASSWORD=password
-   DB_NAME=go_concert
-   JWT_SECRET=your-jwt-secret
-   STRIPE_SECRET_KEY=your-stripe-secret-key
-   PAYPAL_CLIENT_ID=your-paypal-client-id
-   PAYPAL_SECRET=your-paypal-secret
-   ```
+
+    ```env
+    DB_HOST=localhost
+    DB_USER=root
+    DB_PASSWORD=password
+    DB_NAME=go_concert
+    JWT_SECRET=your-jwt-secret
+    STRIPE_SECRET_KEY=your-stripe-secret-key
+    PAYPAL_CLIENT_ID=your-paypal-client-id
+    PAYPAL_SECRET=your-paypal-secret
+    ```
 
 4. Set up MySQL and create the database:
-   ```bash
-   mysql -u root -p
-   CREATE DATABASE go_concert;
-   ```
+
+    ```bash
+    mysql -u root -p
+    CREATE DATABASE go_concert;
+    ```
 
 5. Run the server:
-   ```bash
-   npm start
-   ```
+
+    ```bash
+    npm start
+    ```
 
 6. The app should now be running on `http://localhost:3000`.
 

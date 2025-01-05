@@ -1,10 +1,10 @@
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: goconcertdb
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: goconcert
-      MYSQL_PASSWORD: root
-    ports:
-      - "3306:3306"
+    mysql:
+        image: mysql:8.0
+        container_name: goconcertdb
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: goconcert
+            MYSQL_PASSWORD: root
+        ports:
+            - '3306:3306'
