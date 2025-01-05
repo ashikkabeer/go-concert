@@ -1,64 +1,53 @@
-const { registerUserService, loginUserService } = require('../services/authService')
-
-const registerUser = async (req, res) => {
-    try {
-        const { name, email, password, role } = req.body;
-        const token = await registerUserService(name, email, password, role);
-
-        return res.status(200).json({ "token": token, "message": "Successfull" });
-
-    } catch (error) {
-        return res.status(500).json(error.message);
-
-    }
-}
-
-const loginUser = async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        const token = await loginUserService(email, password);
-        return res.status(200).json({ "token": token, "message": "Successfull" });
-
-    } catch (error) {
-        if (error.message === 'User not found') {
-            res.status(401).json({ error: "User not found. Check email id or create a new account" })
-        } else if (error.message === 'Incorrect password') {
-            res.status(401).json({ error: 'Incorrect password. Please try again.' });
-        } else {
-            res.status(500).json({ error: 'An unexpected error occurred.' });
-        }
-
-    }
-}
-const logoutUser = async (req, res) => {
-    res.status(200).json({ message: 'logged out.' });
-}
-const forgotPassword = async (req, res) => {
-    res.status(200).json({ message: 'forgot password.' });
-}
-const resetPassword = async (req, res) => {
-    res.status(200).json({ message: 'reset password.' });
-}
-
+const { getUserProfileService, updateUserProfileService } = require('../services/userService')
 
 const getUserProfile = async (req, res) => {
-    // [ ] Extract the user ID from the JWT token.
-    // [ ] Fetch the user's details from the users table.
-    // [ ] Return the user's profile data.
-}
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ message: 'Authorization header missing' });
+        }
+
+        const token = authHeader.split(' ')[1]; // Extract token from "Bearer <token>"
+        if (!token) {
+            return res.status(401).json({ message: 'Token missing' });
+        }
+
+        const userData = await getUserProfileService(token);
+
+        res.status(200).json({ message: 'User profile fetched successfully', userData });
+    } catch (error) {
+        console.error('Error in getUserProfile:', error.message);
+        res.status(500).json({ message: 'Failed to fetch user profile', error: error.message });
+    }
+};
+
 const updateUserProfile = async (req, res) => {
-    // [ ] Validate input fields (name, email, password, etc.).
-    // [ ] Allow updating specific fields (e.g., name, email, password).
-    // [ ] Hash the new password if updated.
-    // [ ] Update the user's details in the users table.
-}
+    try {
+        const { name, password, role } = req.body;
+        if (!name || !password || !role) {
+            return res.status(400).json({ message: 'Missing required fields: name, password, role' });
+        }
+
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({ message: 'Authorization header missing' });
+        }
+
+        const token = authHeader.split(' ')[1]; // Extract token from "Bearer <token>"
+        if (!token) {
+            return res.status(401).json({ message: 'Token missing' });
+        }
+
+        const updatedProfile = await updateUserProfileService(token, { name, password, role });
+
+        res.status(200).json({ message: 'User profile updated successfully', updatedProfile });
+    } catch (error) {
+        console.error('Error in updateUserProfile:', error.message);
+        res.status(500).json({ message: 'Failed to update user profile', error: error.message });
+    }
+};
 
 module.exports = {
-    registerUser,
-    loginUser,
-    logoutUser,
-    forgotPassword,
-    resetPassword,
     getUserProfile,
     updateUserProfile
 }

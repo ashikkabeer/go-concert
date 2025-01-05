@@ -18,8 +18,6 @@ const registerUserService = async (name, email, password, role) => {
     };
     const query = `INSERT INTO Users (name, email, password, role) VALUES (?, ?, ?, ?)`;
 
-    console.log('Query about to execute');
-
     const [results] = await pool.execute(query, [userData.name, userData.email, userData.password, userData.role]);
     const userId = results.insertId;
 
