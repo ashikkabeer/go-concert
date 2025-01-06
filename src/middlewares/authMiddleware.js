@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-
+const {verifyToken} = require('../utils/jwtUtils')
 // Middleware to check if the user has the required role
 const roleCheckMiddleware = (allowedRoles) => {
     return (req, res, next) => {
@@ -12,8 +12,7 @@ const roleCheckMiddleware = (allowedRoles) => {
                 });
             }
 
-            const secretKey = process.env.JWT_SECRET;
-            const decoded = jwt.verify(token, secretKey);
+            const decoded = verifyToken(token);
 
             // Check if the user's role is in the allowedRoles array
             const userRole = decoded.role;
