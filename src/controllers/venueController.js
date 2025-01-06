@@ -15,6 +15,9 @@ const deleteVenue = (req,res) => {
     // can delete only if the organizer created it
 }
 
+const getAllVenue = (req,res) => {
+    // can delete only if the organizer created it
+}
 module.exports = {
-    createVenue, getVenue, editVenue, deleteVenue
+    createVenue, getAllVenue, getVenue, editVenue, deleteVenue
 }

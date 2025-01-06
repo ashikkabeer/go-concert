@@ -1,8 +1,8 @@
 const { roleCheckMiddleware, verifyTokenMiddleware, checkProfileOwnershipMiddleware } = require('../middlewares/authMiddleware');
-const { createPayment, getPayment } = require('../controllers/paymentController');
+const { createTicket, getTicket } = require('../controllers/ticketController');
 const router = require('express').Router();
 
-router.post('/', createPayment);
-router.get('/:booking_id', getPayment);
+router.post('/', createTicket);
+router.get('/:booking_id', getTicket);
 
 module.exports = router;

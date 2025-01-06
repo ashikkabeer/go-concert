@@ -11,10 +11,11 @@ const {
 } = require("../controllers/bookingController");
 const router = require("express").Router();
 
-router.post("/:service_id", createBooking); // create a booking
+router.post("/", createBooking); // ? create a booking // send concert_id by body
 router.get("/", verifyTokenMiddleware,checkProfileOwnershipMiddleware, viewAllBookings) // view all the past bookings.
-router.get("/",verifyTokenMiddleware, checkProfileOwnershipMiddleware, viewBooking) // view the booking done.
-router.put('/',verifyTokenMiddleware, checkProfileOwnershipMiddleware, deleteBooking) // soft delete bookings
+router.get("/:id",verifyTokenMiddleware, checkProfileOwnershipMiddleware, viewBooking) // view the booking.
+router.put('/:id/status',verifyTokenMiddleware, checkProfileOwnershipMiddleware, deleteBooking) // organizer update booking status
+router.delete('/:id/',verifyTokenMiddleware, checkProfileOwnershipMiddleware, deleteBooking) // organizer update booking status
 
 
 module.exports = router;

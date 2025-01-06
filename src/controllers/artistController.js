@@ -6,6 +6,9 @@ const createArtist = (req,res) => {
 const getArtist = (req,res) => {
     //anybody
 }
+const getAllArtist = (req,res) => {
+    //anybody
+}
 
 const editArtist = (req,res) => {
     // can edit only if the organizer created it
@@ -16,5 +19,5 @@ const deleteArtist = (req,res) => {
 }
 
 module.exports = {
-    createArtist, getArtist, editArtist, deleteArtist
+    createArtist, getArtist, editArtist, deleteArtist,getAllArtist
 }

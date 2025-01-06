@@ -1,11 +1,11 @@
 const { roleCheckMiddleware, verifyTokenMiddleware, checkProfileOwnershipMiddleware } = require('../middlewares/authMiddleware');
-const {createArtist, getArtist, editArtist, deleteArtist} = require('../controllers/artistController')
+const { createArtist, getArtist, getAllArtist, editArtist, deleteArtist } = require('../controllers/artistController');
 const router = require('express').Router();
 
-
-router.post('/create',createArtist);
-router.get('/:artist_id',getArtist);
-router.put('/:artist_id/edit',editArtist);
-router.delete('/:artist_id/delete',deleteArtist);
+router.post('/', createArtist);
+router.get('/:id', getArtist);
+router.get('/', getAllArtist);
+router.put('/:id', editArtist);
+router.delete('/:id', deleteArtist);
 
 module.exports = router;

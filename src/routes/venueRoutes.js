@@ -1,11 +1,13 @@
 const { roleCheckMiddleware, verifyTokenMiddleware, checkProfileOwnershipMiddleware } = require('../middlewares/authMiddleware');
 
 const router = require('express').Router();
-const { createVenue, getVenue, editVenue, deleteVenue } = require('../controllers/venueController');
+const { createVenue, getVenue, getAllVenue, editVenue, deleteVenue } = require('../controllers/venueController');
 
-router.post('/create', createVenue);
-router.get('/:venue_id', getVenue);
-router.put('/:venue_id/edit', editVenue);
-router.delete('/:venue_id/delete', deleteVenue);
+router.post('/', createVenue);
+router.get('/', getAllVenue);
+router.get('/:id', getVenue);
+
+router.put('/:id', editVenue);
+router.delete('/:id', deleteVenue);
 
 module.exports = router;
