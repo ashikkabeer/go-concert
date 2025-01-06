@@ -1,16 +1,6 @@
 const router = require('express').Router();
-const {
-    registerUser,
-    loginUser,
-    logoutUser,
-    forgotPassword,
-    resetPassword,
-} = require('../controllers/authController');
-const {
-    roleCheckMiddleware,
-    verifyTokenMiddleware,
-    checkProfileOwnershipMiddleware,
-} = require('../middlewares/authMiddleware');
+const { registerUser, loginUser, logoutUser, forgotPassword, resetPassword } = require('../controllers/authController');
+const { roleCheckMiddleware, verifyTokenMiddleware, checkProfileOwnershipMiddleware } = require('../middlewares/authMiddleware');
 //auth routes
 router.post('/register', registerUser);
 router.post('/login', loginUser);

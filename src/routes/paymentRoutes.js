@@ -1,5 +1,1 @@
-const {
-    roleCheckMiddleware,
-    verifyTokenMiddleware,
-    checkProfileOwnershipMiddleware,
-} = require('../middlewares/authMiddleware');
+const { roleCheckMiddleware, verifyTokenMiddleware, checkProfileOwnershipMiddleware } = require('../middlewares/authMiddleware');

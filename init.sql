@@ -1,89 +1,130 @@
-CREATE TABLE IF NOT EXISTS Users (
+-- Create Users Table
+CREATE TABLE Users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('Admin', 'Customer', 'Service Provider') NOT NULL,
+    role ENUM('admin', 'customer', 'organizer') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS Services (
+-- Create Artists Table
+CREATE TABLE Artists (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    bio TEXT,
+    genre VARCHAR(255),
+    image_url VARCHAR(255),
+    created_by INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by) REFERENCES Users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Genres (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    icon_url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Venues Table
+CREATE TABLE Venues (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    description TEXT NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    capacity INT,
+    description TEXT,
+    created_by INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by) REFERENCES Users(id) ON DELETE CASCADE
+);
+
+-- Create Concerts Table
+CREATE TABLE Concerts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    organizer_id INT NOT NULL,
+    artist_id INT,
+    venue_id INT,
+    concert_date DATE NOT NULL,
+    concert_time TIME NOT NULL,
+    description TEXT,
+    is_active BOOLEAN DEFAULT TRUE, -- Column to control visibility
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (artist_id) REFERENCES Artists(id) ON DELETE CASCADE,
+    FOREIGN KEY (venue_id) REFERENCES Venues(id) ON DELETE CASCADE,
+    FOREIGN KEY (organizer_id) REFERENCES Users(id) ON DELETE CASCADE
+
+);
+
+
+-- Create Tickets Table
+CREATE TABLE Tickets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    concert_id INT,
+    ticket_type ENUM('VIP', 'General Admission', 'Other') NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    is_active BOOLEAN DEFAULT 1,
-    approval_status ENUM('pending', 'approved', 'disapproved')
-    provider_id INT NOT NULL,
+    quantity INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (provider_id) REFERENCES Users(id) ON DELETE CASCADE
+    FOREIGN KEY (concert_id) REFERENCES Concerts(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS Bookings (
+-- Create Bookings Table
+CREATE TABLE Bookings (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    service_id INT NOT NULL,
-    date DATE NOT NULL,
-    time_slot TIME NOT NULL,
-    status ENUM('pending', 'confirmed', 'canceled', 'completed') DEFAULT 'pending',
+    user_id INT,
+    ticket_id INT,
+    quantity INT NOT NULL,
+    total_price DECIMAL(10, 2) NOT NULL,
+    booking_status ENUM('pending', 'confirmed', 'canceled') DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE,
-    FOREIGN KEY (service_id) REFERENCES Services(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES Users(id),
+    FOREIGN KEY (ticket_id) REFERENCES Tickets(id),
 );
 
-CREATE TABLE IF NOT EXISTS Payments (
+-- Create Payments Table
+CREATE TABLE Payments (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    booking_id INT NOT NULL,
+    booking_id INT,
     amount DECIMAL(10, 2) NOT NULL,
-    status ENUM('pending', 'completed', 'failed') DEFAULT 'pending',
-    transaction_id VARCHAR(255) NOT NULL,
+    status ENUM('successful', 'failed', 'pending') DEFAULT 'pending',
+    transaction_id VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (booking_id) REFERENCES Bookings(id) ON DELETE CASCADE
+    FOREIGN KEY (booking_id) REFERENCES Bookings(id)
 );
 
-CREATE TABLE IF NOT EXISTS Reviews (
+-- Create Reviews Table
+CREATE TABLE Reviews (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    service_id INT NOT NULL,
-    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    user_id INT,
+    concert_id INT,
+    rating INT NOT NULL,
     review TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE,
-    FOREIGN KEY (service_id) REFERENCES Services(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES Users(id),
+    FOREIGN KEY (concert_id) REFERENCES Concerts(id)
 );
 
-CREATE TABLE IF NOT EXISTS Notifications (
+-- Create Notifications Table
+CREATE TABLE Notifications (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
+    user_id INT,
     message TEXT NOT NULL,
-    type ENUM('info', 'warning', 'error', 'success') NOT NULL,
-    status ENUM('read', 'unread') DEFAULT 'unread',
+    type ENUM('booking', 'payment', 'general') NOT NULL,
+    status ENUM('unread', 'read') DEFAULT 'unread',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
-CREATE TABLE IF NOT EXISTS Reports (
+-- Create Reports Table
+CREATE TABLE Reports (
     id INT AUTO_INCREMENT PRIMARY KEY,
     metric_name VARCHAR(255) NOT NULL,
     value DECIMAL(10, 2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-CREATE TABLE IF NOT EXISTS Categories (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL UNIQUE,
-    description TEXT
-);
-
-CREATE TABLE IF NOT EXISTS ServiceCategories (
-    service_id INT NOT NULL,
-    category_id INT NOT NULL,
-    PRIMARY KEY (service_id, category_id),
-    FOREIGN KEY (service_id) REFERENCES Services(id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES Categories(id) ON DELETE CASCADE
-);
-

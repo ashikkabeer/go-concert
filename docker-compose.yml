@@ -1,12 +1,12 @@
 services:
-  mysql:
-    image: mysql:8.0  # Use MySQL version 8.0 image
-    container_name: goconcertdb  # Container will be named goconcertdb
-    environment:
-      MYSQL_ROOT_PASSWORD: root  # Root password for MySQL
-      MYSQL_DATABASE: goconcert  # Create a database named goconcert
-      MYSQL_PASSWORD: root  # Password for the root user
-    ports:
-      - '3306:3306'  # Expose MySQL port 3306 to the host
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount init.sql to run initialization scripts
+    mysql:
+        image: mysql:8.0 # Use MySQL version 8.0 image
+        container_name: goconcertdb # Container will be named goconcertdb
+        environment:
+            MYSQL_ROOT_PASSWORD: root # Root password for MySQL
+            MYSQL_DATABASE: goconcert # Create a database named goconcert
+            MYSQL_PASSWORD: root # Password for the root user
+        ports:
+            - '3306:3306' # Expose MySQL port 3306 to the host
+        volumes:
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Mount init.sql to run initialization scripts

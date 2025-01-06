@@ -52,14 +52,8 @@ const updateUserProfileService = async (token, updates) => {
     const { name, password, role } = updates; // Assume updates are passed as an object
     const hashPassword = await bcrypt.hash(password, saltRounds);
 
-    const updateQuery =
-        'UPDATE Users SET name = ?, password = ?, role = ? WHERE email = ?';
-    const [updateResult] = await pool.query(updateQuery, [
-        name,
-        hashPassword,
-        role,
-        email,
-    ]);
+    const updateQuery = 'UPDATE Users SET name = ?, password = ?, role = ? WHERE email = ?';
+    const [updateResult] = await pool.query(updateQuery, [name, hashPassword, role, email]);
 
     if (updateResult.affectedRows === 0) {
         throw new Error('Failed to update user profile');

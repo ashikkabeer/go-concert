@@ -16,12 +16,7 @@ const registerUserService = async (name, email, password, role) => {
     };
     const query = `INSERT INTO Users (name, email, password, role) VALUES (?, ?, ?, ?)`;
 
-    const [results] = await pool.execute(query, [
-        userData.name,
-        userData.email,
-        userData.password,
-        userData.role,
-    ]);
+    const [results] = await pool.execute(query, [userData.name, userData.email, userData.password, userData.role]);
     const userId = results.insertId;
 
     const JWT_SECRET = process.env.JWT_SECRET || 'secret';
