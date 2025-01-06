@@ -1,5 +1,6 @@
 
 const createArtist = (req,res) => {
+    
 
 }
 

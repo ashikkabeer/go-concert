@@ -6,9 +6,7 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-// app.use('/',(req,res) => {
-//   res.send("hello world");
-// })
+
 app.use('/api', indexRoutes);
 
 const PORT = process.env.PORT || 5000;

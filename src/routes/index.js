@@ -1,19 +1,23 @@
-const express = require('express');
-const pool = require('../config/db');
-const router = express.Router();
+const router = require('express').Router();
+const { roleCheckMiddleware, verifyTokenMiddleware, checkProfileOwnershipMiddleware } = require('../middlewares/authMiddleware');
 
-const userRoutes = require('./userRoutes');
-const authRoutes = require('./authRoutes');
-const concertRoutes = require('./concertRoutes');
-const bookingRoutes = require('./bookingRoutes')
 const artistRoutes = require('./artistRoutes')
+const authRoutes = require('./authRoutes');
+const bookingRoutes = require('./bookingRoutes')
+const concertRoutes = require('./concertRoutes');
+const genreRoutes = require('./genreRoutes')
+const paymentRoutes = require('./paymentRoutes')
+const ticketRoutes = require('./ticketRoutes')
+const userRoutes = require('./userRoutes');
+const venueRoutes = require('./venueRoutes')
 
+router.use('/artists',verifyTokenMiddleware, artistRoutes)
 router.use('/auth', authRoutes);
-router.use('/users', userRoutes);
-router.use('/services', concertRoutes);
-router.use('/booking',bookingRoutes);
-router.use('/artists',artistRoutes)
-
-//
-
+router.use('/booking',verifyTokenMiddleware, bookingRoutes);
+router.use('/concerts',verifyTokenMiddleware, concertRoutes);
+router.use('/genres',verifyTokenMiddleware,genreRoutes)
+router.use('/payments',verifyTokenMiddleware, paymentRoutes)
+router.use('/tickets',verifyTokenMiddleware, ticketRoutes)
+router.use('/users',verifyTokenMiddleware,  userRoutes);
+router.use('/venues',verifyTokenMiddleware, venueRoutes)
 module.exports = router;

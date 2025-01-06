@@ -2,7 +2,7 @@ const { roleCheckMiddleware, verifyTokenMiddleware, checkProfileOwnershipMiddlew
 const { createTicket, getTicket } = require('../controllers/ticketController');
 const router = require('express').Router();
 
-router.post('/', createTicket);
-router.get('/:booking_id', getTicket);
+router.post('/',roleCheckMiddleware(['customer']), createTicket);
+router.get('/:booking_id',roleCheckMiddleware(['customer','organizer','admin']), getTicket);
 
 module.exports = router;
