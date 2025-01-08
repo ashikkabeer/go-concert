@@ -12,6 +12,8 @@ CREATE TABLE Users (
 -- Create Artists Table
 CREATE TABLE Artists (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    username VARCHAR(255) UNIQUE,
     bio TEXT,
     genre VARCHAR(255),
     image_url VARCHAR(255),
