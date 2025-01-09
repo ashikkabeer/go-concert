@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const {verifyToken} = require('../utils/jwtUtils')
+const { verifyToken } = require('../utils/jwtUtils');
 // Middleware to check if the user has the required role
 const roleCheckMiddleware = (allowedRoles) => {
     return (req, res, next) => {

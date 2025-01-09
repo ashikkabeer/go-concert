@@ -1,7 +1,7 @@
 require('dotenv').config();
 const pool = require('../config/db');
 const bcrypt = require('bcrypt');
-const {signToken} = require('../utils/jwtUtils');
+const { signToken } = require('../utils/jwtUtils');
 const registerUserService = async (name, email, password, role) => {
     const saltRounds = parseInt(process.env.SALT_ROUNDS) || 10;
 

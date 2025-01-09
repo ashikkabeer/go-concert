@@ -2,7 +2,7 @@ const { roleCheckMiddleware, verifyTokenMiddleware, checkProfileOwnershipMiddlew
 const { createPayment, getPayment } = require('../controllers/paymentController');
 const router = require('express').Router();
 
-router.post('/',roleCheckMiddleware(['customer']), createPayment);
-router.get('/:booking_id',roleCheckMiddleware(['customer','organizer','admin']), getPayment);
+router.post('/', roleCheckMiddleware(['customer']), createPayment);
+router.get('/:booking_id', roleCheckMiddleware(['customer', 'organizer', 'admin']), getPayment);
 
 module.exports = router;
