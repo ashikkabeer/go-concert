@@ -1,25 +1,9 @@
 const pool = require('../config/db');
-// id             | int                                    | NO   | PRI | NULL              | auto_increment
-//                    |
-// | user_id        | int                                    | YES  | MUL | NULL              |
-//                    |
-// | ticket_id      | int                                    | YES  | MUL | NULL              |
-//                    |
-// | quantity       | int                                    | NO   |     | NULL              |
-//                    |
-// | total_price    | decimal(10,2)                          | NO   |     | NULL              |
-//                    |
-// | booking_status | enum('pending','confirmed','canceled') | YES  |     | pending           |
-//                    |
-// | created_at     | timestamp                              | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED
-//                    |
-// | updated_at     | timestamp                              | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
+
 const createBookingService = (ticket_id, user_id) => {
-    // get the concert data by service_id
     const getTicketQuery = `SELECT * FROM Tickets WHERE id = ?`;
     const [TicketData] = pool.query(getTicketQuery, [ticket_id]);
     const ticket = TicketData[0];
-    // create a booking -> user_id, ticket_id, date, time_slot
     const quantity = ticket.quantity;
     const total_price = ticket.price * ticket.quantity;
     const booking_status = 'confirmed';

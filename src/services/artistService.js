@@ -17,11 +17,11 @@ const getArtistService = (id) => {
     const [artist] = pool.query(query, [id]);
     return artist[0];
 };
-const getAllArtistService = (id, page_limit, start_index) => {
-    const query = 'SELECT * FROM Artists ORDER BY ? LIMIT PAGE ? OFFSET ?'; //COLUMN NAME // PAGE_SIZE // START_INDEX
+const getAllArtistService = (page_limit, start_index) => {
+    const query = 'SELECT * FROM Artists ORDER BY name LIMIT PAGE ? OFFSET ?'; //COLUMN NAME // PAGE_SIZE // START_INDEX
     // write code to chnage start index after the other
-    // const [artist] = pool.execute(query, [id, page_limit, start_index]);
-    const [artist] = pool.execute(query, [id, 20, 0]);
+    // const [artist] = pool.execute(query, [page_limit, start_index]);
+    const [artist] = pool.execute(query, [20, 0]);
     return artist;
 };
 

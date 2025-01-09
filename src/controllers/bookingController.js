@@ -1,5 +1,10 @@
-const pool = require('../config/db');
-import { createBookingService, cancelBookingService } from '../services/bookingService';
+import {
+    createBookingService,
+    cancelBookingService,
+    viewAllBookingsService,
+    viewBookingService,
+    deleteBookingService,
+} from '../services/bookingService';
 const createBooking = (req, res) => {
     const ticket_id = req.body.ticket_id;
     const user_id = req.user.id;
