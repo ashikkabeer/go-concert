@@ -1,5 +1,4 @@
-const pool = require('../config/db');
-
+const pool = require('../config/db')
 const createBookingService = (ticket_id, user_id) => {
     const getTicketQuery = `SELECT * FROM Tickets WHERE id = ?`;
     const [TicketData] = pool.query(getTicketQuery, [ticket_id]);

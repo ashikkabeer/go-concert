@@ -12,7 +12,6 @@ const searchArtistService = (keyword) => {
 };
 
 const getArtistService = (id) => {
-    const id = req.params.id;
     const query = 'SELECT * FROM Artists WHERE id = ?';
     const [artist] = pool.query(query, [id]);
     return artist[0];

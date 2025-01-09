@@ -1,5 +1,4 @@
 const {
-    createConcert,
     createConcertService,
     updateConcertService,
     deleteConcertService,

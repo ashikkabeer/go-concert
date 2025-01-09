@@ -1,10 +1,10 @@
-import {
+const  {
     createBookingService,
-    cancelBookingService,
-    viewAllBookingsService,
     viewBookingService,
     deleteBookingService,
-} from '../services/bookingService';
+    viewAllBookingsService,
+    cancelBookingService
+} =  require('../services/bookingService');
 const createBooking = (req, res) => {
     const ticket_id = req.body.ticket_id;
     const user_id = req.user.id;
