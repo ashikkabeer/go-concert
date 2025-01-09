@@ -6,12 +6,13 @@ const {
     deleteArtistService,
     searchArtistService,
 } = require('../services/artistService');
-const createArtist = (req, res) => {
+const createArtist = async (req, res) => {
     // created_by from the req.user.id
-    const { bio, genre, image_url } = req.body;
+    const { bio, genre, image_url, name } = req.body;
     const created_by = req.user.id;
+    console.log(bio, genre, image_url, created_by);
     try {
-        const artist_id = createArtistService(bio, genre, image_url, created_by);
+        const artist_id = await createArtistService(bio, genre, image_url, created_by, name);
 
         return res.status(200).json({
             artist_id: artist_id,
@@ -22,53 +23,53 @@ const createArtist = (req, res) => {
     }
 };
 
-const getArtist = (req, res) => {
+const getArtist = async (req, res) => {
     // get artist by id
     const id = req.params.id;
     try {
-        const artist = getArtistService(id);
+        const artist = await getArtistService(id);
         return res.status(200).json(artist);
     } catch (error) {
         return res.status(500).json(error.message);
     }
 };
-const searchArtist = (req, res) => {
+const searchArtist = async (req, res) => {
     const keyword = req.query.keyword;
     try {
-        const artist = searchArtistService(keyword);
+        const artist = await searchArtistService(keyword);
         return res.status(200).json(artist);
     } catch (error) {
         return res.status(500).json(error.message);
     }
 };
-const getAllArtist = (req, res) => {
-    // get all artist
-    const page_limit = 20;
-    const start_index = 0;
+const getAllArtist = async (req, res) => {
     try {
-        const artist = getAllArtistService(page_limit, start_index);
-        return res.status(200).json(artist);
+        const artist = await getAllArtistService();
+        return res.status(200).json({
+            message: 'Successfull',
+            artist,
+        });
     } catch (error) {
         return res.status(500).json(error.message);
     }
 };
 
-const editArtist = (req, res) => {
+const editArtist = async (req, res) => {
     // edit only if its from created_by
     const id = req.params.id;
     try {
-        const artist = editArtistService(id);
+        const artist = await editArtistService(id);
         return res.status(200).json(artist);
     } catch (error) {
         return res.status(500).json(error.message);
     }
 };
 
-const deleteArtist = (req, res) => {
+const deleteArtist = async (req, res) => {
     // can delete only if the organizer created it
     const id = req.params.id;
     try {
-        const result = deleteArtistService(id);
+        const result = await deleteArtistService(id);
         return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json(error.message);
