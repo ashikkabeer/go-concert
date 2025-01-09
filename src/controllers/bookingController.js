@@ -1,33 +1,55 @@
-const pool = require('../config/db')
-
+const pool = require('../config/db');
+import { createBookingService, cancelBookingService } from '../services/bookingService';
 const createBooking = (req, res) => {
-    const service_id = req.params.service_id;
+    const ticket_id = req.body.ticket_id;
     const user_id = req.user.id;
-    
-    // get the user data by the id.
-    const getUserQuery = `SELECT * FROM Users WHERE id = ?`;
-    const [userData] = pool.query(getUserQuery,[user_id]);
-    const user = userData[0];
-    // get the concert data by service_id
-    const getConcertQuery = `SELECT * FROM Users WHERE id = ?`;
-    const [concertData] = pool.query(getConcertQuery,[service_id]);
-    const concert = concertData[0];
-    // create a booking -> user_id, service_id, date, time_slot
-
-    const createBookingQuery = 'INSERT INTO Bookings(user_id, service_id, date, time_slot)'
-    const [results] = pool.execute()
-    
+    const booking = createBookingService(ticket_id, user_id);
+    res.status(201).json({
+        message: 'Booking created successfully',
+        booking,
+    });
 };
 
-const viewBooking = (req, res) => {};
+const viewBooking = (req, res) => {
+    const id = req.params.id;
+    const booking = viewBookingService(id);
+    res.status(200).json({
+        message: 'Booking created successfully',
+        booking,
+    });
+};
 
-const viewAllBookings = (req, res) => {};
+const viewAllBookings = (req, res) => {
+    const bookings = viewAllBookingsService(req.user.id);
+    res.status(200).json({
+        message: 'All bookings fetched successfully',
+        bookings,
+    });
+};
 
-const deleteBooking = (req, res) => {};
+const deleteBooking = (req, res) => {
+    const id = req.params.id;
+    const booking = deleteBookingService(id);
+    res.status(200).json({
+        message: 'Booking deleted successfully',
+        booking,
+    });
+};
+const cancelBooking = (req, res) => {
+    // update the booking_status to 'cancelled'
+    const id = req.params.id;
+    const booking_status = 'cancelled';
+    const booking = cancelBookingService(id, booking_status);
+    res.status(200).json({
+        message: 'Booking cancelled successfully',
+        booking,
+    });
+};
 
 module.exports = {
-  createBooking,
-  viewBooking,
-  deleteBooking,
-  viewAllBookings,
+    createBooking,
+    viewBooking,
+    deleteBooking,
+    viewAllBookings,
+    cancelBooking,
 };
