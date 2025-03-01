@@ -3,7 +3,7 @@ const {createGenreService,
     editGenreService,
     deleteGenreService,
     getAllGenreService,
-} = require('../service/genreService');
+} = require('../services/genreService');
 
 const createGenre = async (req, res) => {
     try {
